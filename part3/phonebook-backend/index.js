@@ -2,7 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
-require('dotenv').config();
+require('dotenv').config()
 app.use(express.json())
 morgan.token('body', (req) => {
     return JSON.stringify(req.body)
@@ -18,16 +18,16 @@ const errorHandler = (error, request, response, next) => {
     console.error(error.message)
 
     if (error.name === 'CastError') {
-        return response.status(400).send({error: 'malformatted id'})
+        return response.status(400).send({ error: 'malformatted id' })
     } else if (error.name === 'ValidationError'){
-        return response.status(400).json({error: error.message})
+        return response.status(400).json({ error: error.message })
     }
 
     next(error)
 }
 
 const unknownEndpoint = (request, response) => {
-    response.status(404).send({error: 'unknown endpoint'})
+    response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.get('/api/persons', (request, response) => {
@@ -91,13 +91,13 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-    const {name, number} = request.body
+    const { name, number } = request.body
     // const person = {
     //     name: body.name,
     //     number: body.number
     // }
 
-    Person.findByIdAndUpdate(request.params.id, {name, number}, {new: true, runValidators:true, context:'query'})
+    Person.findByIdAndUpdate(request.params.id, { name, number }, { new: true, runValidators:true, context:'query' })
         .then(updatedPerson => {
             response.json(updatedPerson)
         })
